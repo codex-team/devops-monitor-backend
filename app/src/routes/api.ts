@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import { UserController } from '../controllers/userController';
+import { UserRequest } from '../requests/userRequest';
 
 /**
  * Express router
  */
 export class Routes {
     public UserController: UserController = new UserController()
+    public UserRequest: UserRequest = new UserRequest()
 
     /**
      * Express routes
@@ -22,9 +24,15 @@ export class Routes {
 
       // User
       app.route('/users')
-        .post(this.UserController.create);
+        .post(
+          this.UserRequest.create(),
+          this.UserController.create
+        );
       app.route('/users/:userId')
         .get(this.UserController.find)
-        .put(this.UserController.update);
+        .put(
+          this.UserRequest.update(),
+          this.UserController.update
+        );
     }
 }

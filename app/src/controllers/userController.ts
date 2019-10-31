@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { UserSchema } from '../models/userModel';
 import { Request, Response } from 'express';
+const { validationResult } = require('express-validator');
 
 const User = mongoose.model('User', UserSchema);
 
@@ -15,6 +16,17 @@ export class UserController {
    * @return json object with statusCode and and created user
    */
   public async create(req: Request, res: Response): Promise<void> {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.json({
+        statusCode: 422,
+        errorMessage: 'The request data is invalid.',
+        errors: errors.array()
+      });
+      return;
+    }
+
     try {
       const newUser = new User({
         name: req.body.name,
@@ -63,6 +75,17 @@ export class UserController {
    * @return json object with statusCode and updated user details
    */
   public async update(req: Request, res: Response): Promise<void> {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.json({
+        statusCode: 422,
+        errorMessage: 'The request data is invalid.',
+        errors: errors.array()
+      });
+      return;
+    }
+
     try {
       const user = await User.findOneAndUpdate({
         _id: req.params.userId
