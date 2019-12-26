@@ -3,6 +3,15 @@
 ## API-Doc Link
 https://documenter.getpostman.com/view/5821732/SWEB3GZ9
 
+## How to run in production
+Run the script at `app/bin/run` in the production environment
+
+Afterwards the logs can be access within the screen session
+```
+screen -r DevopsMonitorBackend
+```
+To exit the screen session without stoping the script press `Ctrl-a` + `Ctrl-d`.
+
 ## Development Setup
 Startup cocker containers
 ```
