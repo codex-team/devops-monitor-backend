@@ -55,7 +55,7 @@ export class ServiceController {
    * @param  {Response} res — express response object
    * @return json object with statusCode and and created service
    */
-  public async create(req: Request, res: Response): Promise<void> {
+  public async upsert(req: Request, res: Response): Promise<void> {
     try {
       // check if project for token is existing
       const project = await Project.findOne({
@@ -70,13 +70,17 @@ export class ServiceController {
         return;
       }
 
-      // create new service entry
-      const newService = new Service({
+      // upsert model based on project project id and service name
+      const service = await Service.findOneAndUpdate({
         project: project.id,
-        name: req.body.name,
+        name: req.body.name
+      }, {
         payload: req.body.payload
+      }, {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true
       });
-      const service = await newService.save();
 
       res.json({
         statusCode: 200,
