@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import { Routes } from './routes/api';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import morgan from 'morgan'
 
 /**
  * Main app to configure express server with mongo connection
@@ -30,6 +31,8 @@ class App {
       this.app.use(bodyParser.urlencoded({ extended: false }));
       // serving static files
       this.app.use(express.static('public'));
+      // setup request logger
+      this.app.use(morgan('combined'))
     }
 
     /**
